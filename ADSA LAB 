@@ -1,0 +1,152 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyNOlKcgB6zUcYBRQLjLK0yY",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/jayanthkvn/ADSA-s-ASSIGNMENT/blob/main/ADSA%20LAB%20\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "class Node:\n",
+        "    def __init__(self, name, age, patient_id):\n",
+        "        self.name = name\n",
+        "        self.age = age\n",
+        "        self.patient_id = patient_id\n",
+        "        self.next = None\n",
+        "\n",
+        "\n",
+        "class CircularPatientList:\n",
+        "    def __init__(self):\n",
+        "        self.head = None\n",
+        "\n",
+        "\n",
+        "    def insert_patient(self, name, age, patient_id):\n",
+        "        new_node = Node(name, age, patient_id)\n",
+        "\n",
+        "        if self.head is None:\n",
+        "            self.head = new_node\n",
+        "            self.head.next = self.head\n",
+        "            print(f\"Patient {name} added as first patient.\")\n",
+        "        else:\n",
+        "            temp = self.head\n",
+        "            while temp.next != self.head:\n",
+        "                temp = temp.next\n",
+        "            temp.next = new_node\n",
+        "            new_node.next = self.head\n",
+        "            print(f\"Patient {name} added to the list.\")\n",
+        "\n",
+        "\n",
+        "    def delete_patient(self, patient_id):\n",
+        "        if self.head is None:\n",
+        "            print(\"No patients to delete.\")\n",
+        "            return\n",
+        "\n",
+        "        current = self.head\n",
+        "        prev = None\n",
+        "\n",
+        "\n",
+        "        if current.next == self.head and current.patient_id == patient_id:\n",
+        "            self.head = None\n",
+        "            print(f\"Patient with ID {patient_id} deleted.\")\n",
+        "            return\n",
+        "\n",
+        "\n",
+        "        while True:\n",
+        "            if current.patient_id == patient_id:\n",
+        "                if prev is not None:\n",
+        "                    prev.next = current.next\n",
+        "                else:\n",
+        "\n",
+        "                    temp = self.head\n",
+        "                    while temp.next != self.head:\n",
+        "                        temp = temp.next\n",
+        "                    temp.next = self.head.next\n",
+        "                    self.head = self.head.next\n",
+        "                print(f\"Patient with ID {patient_id} deleted.\")\n",
+        "                return\n",
+        "            prev = current\n",
+        "            current = current.next\n",
+        "            if current == self.head:\n",
+        "                break\n",
+        "\n",
+        "        print(f\"Patient with ID {patient_id} not found.\")\n",
+        "\n",
+        "    def display_patients(self):\n",
+        "        if self.head is None:\n",
+        "            print(\"No patients in the list.\")\n",
+        "            return\n",
+        "\n",
+        "        temp = self.head\n",
+        "        print(\"\\nCurrent Patient Round-Robin List:\")\n",
+        "        while True:\n",
+        "            print(f\"Name: {temp.name}, Age: {temp.age}, ID: {temp.patient_id}\")\n",
+        "            temp = temp.next\n",
+        "            if temp == self.head:\n",
+        "                break\n",
+        "\n",
+        "if __name__ == \"__main__\":\n",
+        "    patients = CircularPatientList()\n",
+        "    patients.insert_patient(\"Jinnie\", 30, 101)\n",
+        "    patients.insert_patient(\"Alekya\", 25, 102)\n",
+        "    patients.insert_patient(\"Bobbie\", 40, 103)\n",
+        "\n",
+        "    patients.display_patients()\n",
+        "\n",
+        "\n",
+        "    patients.delete_patient(102)\n",
+        "    patients.display_patients()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "gy84rQjsW7kp",
+        "outputId": "19d698b9-3e5d-4812-fce8-e3df89527cf5"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Patient Jinnie added as first patient.\n",
+            "Patient Alekya added to the list.\n",
+            "Patient Bobbie added to the list.\n",
+            "\n",
+            "Current Patient Round-Robin List:\n",
+            "Name: Jinnie, Age: 30, ID: 101\n",
+            "Name: Alekya, Age: 25, ID: 102\n",
+            "Name: Bobbie, Age: 40, ID: 103\n",
+            "Patient with ID 102 deleted.\n",
+            "\n",
+            "Current Patient Round-Robin List:\n",
+            "Name: Jinnie, Age: 30, ID: 101\n",
+            "Name: Bobbie, Age: 40, ID: 103\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
